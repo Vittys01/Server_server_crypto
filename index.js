@@ -1,3 +1,4 @@
+/*
 import crypto from "crypto";
 
 const generateKey = async () => {
@@ -91,9 +92,11 @@ const decrypt = async (encryptedData, key) => {
 
   return arrayBufferToString(decryptedBuffer);
 };
+
 ( async function () {
-  const encryptedDataHex = "d6a60c3535491b50c7654c6dbb0df3cec3c358d81d8fa9ef0f412801d784c00828dfa4fc595d0fa600a1f843929970c7c21122cce30138374e84fef4ffbbc6d333bbe77e93941e5ff7fba768685ef61b";
-  const ivHex = "263611e818f2f8c62c08ce9428f88a89";
+
+  const encryptedDataHex = "072c802a1790bf7d2dbe454cad53a6bd7e7a2174d08a43c5e0578f932e102ef6a0b9a9e90686139b36c497cd722f18c56de752ff198a59a98a48dbb6c42ada4082c516d2f895c25cb7af908f42e8adba";
+  const ivHex = "c352e8e92767d13e753ef80758517e2e";
 
   const encryptedDataArrayBuffer =  hexStringToArrayBuffer(encryptedDataHex);
   const ivArrayBuffer =  hexStringToArrayBuffer(ivHex);
@@ -107,6 +110,30 @@ const decrypt = async (encryptedData, key) => {
   // Decrypt the data
   const decryptedData = await decrypt(objeto, key);
   console.log(decryptedData);
-  console.log( generateKey() );
-} )();
 
+} )();
+*/
+//SERVER B
+import crypto from "crypto";
+import fs from "fs";
+
+// Leer la clave pública del Servidor A
+const publicKeyA = fs.readFileSync('publicKeyA.pem', 'utf-8');
+
+
+// Leer el mensaje cifrado desde Servidor A
+const encryptedBuffer = fs.readFileSync('encryptedMessageFromA.txt');
+
+// Leer la clave privada del Servidor B
+const privateKeyB = fs.readFileSync('privateKeyB.pem', 'utf-8');
+
+// Descifrado asimétrico usando la clave privada del Servidor B
+const decryptedBuffer = crypto.privateDecrypt({
+  key: privateKeyB,
+  padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+  oaepHash: 'sha256',
+}, encryptedBuffer);
+
+const decryptedObject = JSON.parse(decryptedBuffer.toString('utf-8'));
+
+console.log('Mensaje descifrado en Servidor B:\n', decryptedObject);
