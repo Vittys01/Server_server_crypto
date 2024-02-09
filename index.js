@@ -121,8 +121,12 @@ import fs from "fs";
 const publicKeyA = fs.readFileSync('publicKeyA.pem', 'utf-8');
 
 
-// Leer el mensaje cifrado desde Servidor A
-const encryptedBuffer = fs.readFileSync('encryptedMessageFromA.txt');
+// Leer el mensaje cifrado desde Servidor A en Base64
+const encryptedBase64 = "Y2UIGtVT3xyLmO6ValfTxJ1OQrCA8e4B/IYFORbA57KV5V0y2zMxbxiUQV8C2cUWJ4aRkqHzHuSq0bL/9R5jdNrsq3SG3yfcksvf3wShJIhYKUPCTSJ7mjkaJVBxexDFwcnezVaFz+vHElMsdW6tPdJukneDz434DKzIWvfdqWreHJYbPorDVeO2s9FNCblmCmp0a9l+2IfQTY2wf/f1aRit3qNmfiLGeCuYOF1DOqIljU0vXjQLI3EVUdKSNWLQJoOo0nuv8i2w9mB4nx8xfCBow6xHveMO+rajKfgS2gPBJIH4wA2PBPFlXPlsGLXqQQoxx4+oAgu8L3FBQWoA4Q=="
+
+// Decodificar el mensaje cifrado desde Base64
+const encryptedBuffer = Buffer.from(encryptedBase64, 'base64');
+
 
 // Leer la clave privada del Servidor B
 const privateKeyB = fs.readFileSync('privateKeyB.pem', 'utf-8');
